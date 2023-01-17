@@ -1,6 +1,9 @@
 function Name(props){
     return(
-        <h4>{props.name}</h4>
+        <>
+            <h4>{props.name}</h4>
+        </>
+
     )
 }
 
