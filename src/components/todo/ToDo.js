@@ -25,7 +25,6 @@ class ToDo extends Component {
     remove = (event) => {
 
     }
-
     render() {
         const {tasks} = this.state
         const taskComponents = tasks.map((task, index) => {
