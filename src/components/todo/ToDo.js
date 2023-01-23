@@ -1,8 +1,8 @@
 import React, {Component} from "react";
 //import styles from './todo.module.css';
-import {Button, Col, Row, Container, Card} from 'react-bootstrap';
+import {Button, Col, Row, Container, Card, InputGroup, Form} from 'react-bootstrap';
 import idGenerator from "../../helpers/idGenerator";
-// 00:48
+// 01:05
 class ToDo extends Component {
     state = {
         inputValue: '',
@@ -28,14 +28,17 @@ class ToDo extends Component {
             })
         }
     }
-    remove = () => {
-
+    remove = (taskId) => {
+        const newTasks = this.state.tasks.filter((task) => taskId != task._id) //return true new array
+        this.setState({
+            tasks: newTasks,
+        })
     }
 
     render() {
         const {tasks} = this.state
         const taskComponents = tasks.map((task) => {
-            return <Col key={task._id} xs={12} sm={6} md={4} lg={3} xl={2} >
+            return <Col key={task._id} xs={12} sm={6} md={4} lg={3} xl={2}>
                 <Card className='my-2'>
                     <Card.Body>
                         <Card.Title>{task.title}</Card.Title>
@@ -43,7 +46,7 @@ class ToDo extends Component {
                             Some quick example text to build on the card title and make up the
                             bulk of the card's content.
                         </Card.Text>
-                        <Button variant="danger" onClick={this.remove}>Delete</Button>
+                        <Button variant="danger" onClick={() => this.remove(task._id)}>Delete</Button>
                     </Card.Body>
                 </Card>
             </Col>
@@ -57,17 +60,18 @@ class ToDo extends Component {
                 </Row>
                 <Row>
                     <Col className="d-flex gap-2">
-                        <input
-                            type="text"
-                            onChange={this.handleChange}
-                            value={this.state.inputValue}
-                        />
-                        <Button
-                            variant="primary"
-                            onClick={this.addTask}
-                        >
-                            Add Task
-                        </Button>
+                        <InputGroup>
+                            <Form.Control
+                                placeholder="Recipient's username"
+                                onChange={this.handleChange}
+                                value={this.state.inputValue}
+                            />
+                            <Button variant="primary"
+                                    onClick={this.addTask}
+                                    id="button-addon2">
+                                Add Task
+                            </Button>
+                        </InputGroup>
                     </Col>
                 </Row>
                 <Row>
