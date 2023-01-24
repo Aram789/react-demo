@@ -2,11 +2,12 @@ import React, {Component} from "react";
 //import styles from './todo.module.css';
 import {Button, Col, Row, Container, Card, InputGroup, Form} from 'react-bootstrap';
 import idGenerator from "../../helpers/idGenerator";
-// 01:05
+
 class ToDo extends Component {
     state = {
         inputValue: '',
         tasks: [],
+        selectedTasks: []
     }
     handleChange = (event) => {
         this.setState({
@@ -28,13 +29,21 @@ class ToDo extends Component {
             })
         }
     }
-    remove = (taskId) => {
-        const newTasks = this.state.tasks.filter((task) => taskId != task._id) //return true new array
+    remove  = (taskId) => {
+        const newTasks = this.state.tasks.filter((task) => taskId !== task._id) //return true new array
+
         this.setState({
             tasks: newTasks,
         })
     }
 
+    selectedTasks = (taskId) => {
+        const selectedTasks = [...this.state.selectedTasks, taskId]
+
+        this.setState({
+            selectedTasks
+        })
+    }
     render() {
         const {tasks} = this.state
         const taskComponents = tasks.map((task) => {
@@ -42,6 +51,7 @@ class ToDo extends Component {
                 <Card className='my-2'>
                     <Card.Body>
                         <Card.Title>{task.title}</Card.Title>
+                        <Form.Check onChange={()=> this.selectedTasks(task._id)}/>
                         <Card.Text>
                             Some quick example text to build on the card title and make up the
                             bulk of the card's content.
@@ -62,7 +72,7 @@ class ToDo extends Component {
                     <Col className="d-flex gap-2">
                         <InputGroup>
                             <Form.Control
-                                placeholder="Recipient's username"
+                                placeholder="My Task"
                                 onChange={this.handleChange}
                                 value={this.state.inputValue}
                             />
