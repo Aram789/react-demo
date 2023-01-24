@@ -7,7 +7,7 @@ class ToDo extends Component {
     state = {
         inputValue: '',
         tasks: [],
-        selectedTasks: []
+        selectedTasks: new Set()
     }
     handleChange = (event) => {
         this.setState({
@@ -38,14 +38,34 @@ class ToDo extends Component {
     }
 
     selectedTasks = (taskId) => {
-        const selectedTasks = [...this.state.selectedTasks, taskId]
+        const selectedTasks = new Set(this.state.selectedTasks);
 
+        if(selectedTasks.has(taskId)){
+            selectedTasks.delete(taskId)
+        }else{
+            selectedTasks.add(taskId)
+        }
         this.setState({
             selectedTasks
         })
     }
+
+    removeAllChecked = () =>{
+        const {selectedTasks, tasks} = this.state;
+
+        const newTask = tasks.filter((task)=>{
+            if(selectedTasks.has(task._id)){
+                return false;
+            }
+            return true;
+        });
+        this.setState({
+            tasks: newTask,
+            selectedTasks: new  Set()
+        })
+    }
     render() {
-        const {tasks} = this.state
+        const {tasks, selectedTasks} = this.state
         const taskComponents = tasks.map((task) => {
             return <Col key={task._id} xs={12} sm={6} md={4} lg={3} xl={2}>
                 <Card className='my-2'>
@@ -82,6 +102,11 @@ class ToDo extends Component {
                                 Add Task
                             </Button>
                         </InputGroup>
+                    </Col>
+                </Row>
+                <Row className='my-2'>
+                    <Col>
+                        <Button variant="danger" onClick={this.removeAllChecked} disabled={!selectedTasks.size}>Delete Selected</Button>
                     </Col>
                 </Row>
                 <Row>
