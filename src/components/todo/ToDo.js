@@ -76,7 +76,11 @@ class ToDo extends Component {
                             Some quick example text to build on the card title and make up the
                             bulk of the card's content.
                         </Card.Text>
-                        <Button variant="danger" onClick={() => this.remove(task._id)}>Delete</Button>
+                        <Button
+                            variant="danger"
+                            onClick={() => this.remove(task._id)}
+                            disabled={selectedTasks.size}
+                        >Delete</Button>
                     </Card.Body>
                 </Card>
             </Col>
@@ -98,7 +102,8 @@ class ToDo extends Component {
                             />
                             <Button variant="primary"
                                     onClick={this.addTask}
-                                    id="button-addon2">
+                                    id="button-addon2"
+                            >
                                 Add Task
                             </Button>
                         </InputGroup>
