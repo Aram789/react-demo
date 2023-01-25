@@ -29,7 +29,7 @@ class ToDo extends Component {
             })
         }
     }
-    remove  = (taskId) => {
+    remove = (taskId) => {
         const newTasks = this.state.tasks.filter((task) => taskId !== task._id) //return true new array
 
         this.setState({
@@ -40,9 +40,9 @@ class ToDo extends Component {
     selectedTasks = (taskId) => {
         const selectedTasks = new Set(this.state.selectedTasks);
 
-        if(selectedTasks.has(taskId)){
+        if (selectedTasks.has(taskId)) {
             selectedTasks.delete(taskId)
-        }else{
+        } else {
             selectedTasks.add(taskId)
         }
         this.setState({
@@ -50,20 +50,26 @@ class ToDo extends Component {
         })
     }
 
-    removeAllChecked = () =>{
+    removeAllChecked = () => {
         const {selectedTasks, tasks} = this.state;
 
-        const newTask = tasks.filter((task)=>{
-            if(selectedTasks.has(task._id)){
+        const newTask = tasks.filter((task) => {
+            if (selectedTasks.has(task._id)) {
                 return false;
             }
             return true;
         });
         this.setState({
             tasks: newTask,
-            selectedTasks: new  Set()
+            selectedTasks: new Set()
         })
     }
+    handleKeyDown = (event) =>{
+        if(event.key === 'Enter'){
+            this.addTask();
+        }
+    }
+
     render() {
         const {tasks, selectedTasks} = this.state
         const taskComponents = tasks.map((task) => {
@@ -71,7 +77,9 @@ class ToDo extends Component {
                 <Card className='my-2'>
                     <Card.Body>
                         <Card.Title>{task.title}</Card.Title>
-                        <Form.Check onChange={()=> this.selectedTasks(task._id)}/>
+                        <Form.Check
+                            onChange={() => this.selectedTasks(task._id)}
+                        />
                         <Card.Text>
                             Some quick example text to build on the card title and make up the
                             bulk of the card's content.
@@ -79,7 +87,7 @@ class ToDo extends Component {
                         <Button
                             variant="danger"
                             onClick={() => this.remove(task._id)}
-                            disabled={selectedTasks.size}
+                            disabled={!!selectedTasks.size}
                         >Delete</Button>
                     </Card.Body>
                 </Card>
@@ -99,10 +107,12 @@ class ToDo extends Component {
                                 placeholder="My Task"
                                 onChange={this.handleChange}
                                 value={this.state.inputValue}
+                                onKeyDown={this.handleKeyDown}
                             />
                             <Button variant="primary"
                                     onClick={this.addTask}
                                     id="button-addon2"
+                                    disabled={!!selectedTasks.size}
                             >
                                 Add Task
                             </Button>
@@ -111,7 +121,8 @@ class ToDo extends Component {
                 </Row>
                 <Row className='my-2'>
                     <Col>
-                        <Button variant="danger" onClick={this.removeAllChecked} disabled={!selectedTasks.size}>Delete Selected</Button>
+                        <Button variant="danger" onClick={this.removeAllChecked} disabled={!selectedTasks.size}>Delete
+                            Selected</Button>
                     </Col>
                 </Row>
                 <Row>
