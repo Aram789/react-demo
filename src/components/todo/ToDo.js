@@ -3,7 +3,7 @@ import Task from "../task/Task";
 //import styles from './todo.module.css';
 import {Button, Col, Row, Container, InputGroup, Form} from 'react-bootstrap';
 import idGenerator from "../../helpers/idGenerator";
-// 13-2 00:22
+// 13-2 00:31:42
 class ToDo extends Component {
     state = {
         inputValue: '',
