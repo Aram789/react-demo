@@ -1,8 +1,9 @@
 import React, {Component} from "react";
+import Task from "../task/Task";
 //import styles from './todo.module.css';
-import {Button, Col, Row, Container, Card, InputGroup, Form} from 'react-bootstrap';
+import {Button, Col, Row, Container, InputGroup, Form} from 'react-bootstrap';
 import idGenerator from "../../helpers/idGenerator";
-
+// 13-2 00:22
 class ToDo extends Component {
     state = {
         inputValue: '',
@@ -29,7 +30,7 @@ class ToDo extends Component {
             })
         }
     }
-    remove = (taskId) => {
+    remove  = (taskId) => {
         const newTasks = this.state.tasks.filter((task) => taskId !== task._id) //return true new array
 
         this.setState({
@@ -51,6 +52,7 @@ class ToDo extends Component {
     }
 
     removeAllChecked = () => {
+
         const {selectedTasks, tasks} = this.state;
 
         const newTask = tasks.filter((task) => {
@@ -64,8 +66,8 @@ class ToDo extends Component {
             selectedTasks: new Set()
         })
     }
-    handleKeyDown = (event) =>{
-        if(event.key === 'Enter'){
+    handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
             this.addTask();
         }
     }
@@ -74,23 +76,12 @@ class ToDo extends Component {
         const {tasks, selectedTasks} = this.state
         const taskComponents = tasks.map((task) => {
             return <Col key={task._id} xs={12} sm={6} md={4} lg={3} xl={2}>
-                <Card className='my-2'>
-                    <Card.Body>
-                        <Card.Title>{task.title}</Card.Title>
-                        <Form.Check
-                            onChange={() => this.selectedTasks(task._id)}
-                        />
-                        <Card.Text>
-                            Some quick example text to build on the card title and make up the
-                            bulk of the card's content.
-                        </Card.Text>
-                        <Button
-                            variant="danger"
-                            onClick={() => this.remove(task._id)}
-                            disabled={!!selectedTasks.size}
-                        >Delete</Button>
-                    </Card.Body>
-                </Card>
+                <Task
+                    data={task}
+                    onToggle={this.selectedTasks}
+                    disabled={!!selectedTasks.size}
+                    onDelete={this.remove}
+                />
             </Col>
         })
         return (
