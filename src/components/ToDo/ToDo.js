@@ -1,34 +1,21 @@
 import React, {Component} from "react";
-import Task from "../task/Task";
-//import styles from './todo.module.css';
-import {Button, Col, Row, Container, InputGroup, Form} from 'react-bootstrap';
-import idGenerator from "../../helpers/idGenerator";
-// 13-2 00:31:42
+import Task from "../Task/Task";
+import {Button, Col, Row, Container} from 'react-bootstrap';
+import NewTask from "../NewTask/NewTask";
+import Confirm from "../Confirm";
+
 class ToDo extends Component {
     state = {
-        inputValue: '',
         tasks: [],
-        selectedTasks: new Set()
+        selectedTasks: new Set(),
+        showConfirm:false
     }
-    handleChange = (event) => {
-        this.setState({
-            inputValue: event.target.value
-        })
-    }
-    addTask = () => {
-        const inputValue = this.state.inputValue.trim();
-        const newTask = {
-            _id: idGenerator(),
-            title: inputValue
-        }
-        const tasks = [...this.state.tasks, newTask]
+    addTask = (newTask) => {
+       const tasks = [...this.state.tasks, newTask];
 
-        if (inputValue) {
-            this.setState({
-                tasks,
-                inputValue: '',
-            })
-        }
+        this.setState({
+            tasks
+        })
     }
     remove  = (taskId) => {
         const newTasks = this.state.tasks.filter((task) => taskId !== task._id) //return true new array
@@ -47,10 +34,15 @@ class ToDo extends Component {
             selectedTasks.add(taskId)
         }
         this.setState({
-            selectedTasks
+            selectedTasks,
+
         })
     }
-
+    toggleConfirm = () => {
+        this.setState({
+            showConfirm: !this.state.showConfirm
+        })
+    }
     removeAllChecked = () => {
 
         const {selectedTasks, tasks} = this.state;
@@ -63,17 +55,13 @@ class ToDo extends Component {
         });
         this.setState({
             tasks: newTask,
-            selectedTasks: new Set()
+            selectedTasks: new Set(),
+            showConfirm:false
         })
-    }
-    handleKeyDown = (event) => {
-        if (event.key === 'Enter') {
-            this.addTask();
-        }
     }
 
     render() {
-        const {tasks, selectedTasks} = this.state
+        const {tasks, selectedTasks, showConfirm} = this.state
         const taskComponents = tasks.map((task) => {
             return <Col key={task._id} xs={12} sm={6} md={4} lg={3} xl={2}>
                 <Task
@@ -93,32 +81,27 @@ class ToDo extends Component {
                 </Row>
                 <Row>
                     <Col className="d-flex gap-2">
-                        <InputGroup>
-                            <Form.Control
-                                placeholder="My Task"
-                                onChange={this.handleChange}
-                                value={this.state.inputValue}
-                                onKeyDown={this.handleKeyDown}
-                            />
-                            <Button variant="primary"
-                                    onClick={this.addTask}
-                                    id="button-addon2"
-                                    disabled={!!selectedTasks.size}
-                            >
-                                Add Task
-                            </Button>
-                        </InputGroup>
+                        <NewTask
+                            disabled={!!selectedTasks.size}
+                            onAdd={this.addTask}
+                        />
                     </Col>
                 </Row>
                 <Row className='my-2'>
                     <Col>
-                        <Button variant="danger" onClick={this.removeAllChecked} disabled={!selectedTasks.size}>Delete
+                        <Button variant="danger" onClick={this.toggleConfirm} disabled={!selectedTasks.size}>Delete
                             Selected</Button>
                     </Col>
                 </Row>
                 <Row>
                     {taskComponents}
                 </Row>
+                {showConfirm &&
+                    <Confirm
+                        onClose={this.toggleConfirm}
+                        onConfirm={this.removeAllChecked}
+                        count={selectedTasks.size}
+                />}
             </Container>
         )
     }

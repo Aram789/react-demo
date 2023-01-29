@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import styles from './taskStyle.module.css';
 import {Button, Card, Form} from "react-bootstrap";
+import PropTypes from 'prop-types';
 
 
 class Task extends Component {
@@ -8,16 +9,17 @@ class Task extends Component {
         selected: false
     };
     handleChange = () => {
-        const {onToggle, data } = this.props
+        const {onToggle, data} = this.props
         onToggle(data._id)
 
         this.setState({
             selected: !this.state.selected
         })
     }
+
     render() {
         const task = this.props.data;
-        const{ disabled, onDelete} = this.props;
+        const {disabled, onDelete} = this.props;
         const {selected} = this.state
         return (
             <Card className={`${selected ? styles.selected : ''} my-2`}>
@@ -41,4 +43,11 @@ class Task extends Component {
     }
 }
 
+
+Task.propTypes = {
+    data: PropTypes.object.isRequired,
+    onToggle: PropTypes.func.isRequired,
+    disabled:PropTypes.bool.isRequired,
+    onDelete:PropTypes.func.isRequired
+};
 export default Task;
