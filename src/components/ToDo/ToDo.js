@@ -114,37 +114,33 @@ class ToDo extends Component {
                             Add new Task</Button>
                     </Col>
                     {tasks.length ?
-                        <Col>
-                            <Button
-                                variant="danger"
-                                onClick={this.toggleConfirm}
-                                disabled={!selectedTasks.size}
-                            >
-                                Delete Selected</Button>
-                        </Col>
+                        <>
+                            <Col>
+                                <Button
+                                    variant="danger"
+                                    onClick={this.toggleConfirm}
+                                    disabled={!selectedTasks.size}
+                                >
+                                    Delete Selected</Button>
+                            </Col>
+                            <Col>
+                                <Button
+                                    variant="warning"
+                                    onClick={this.selectAll}
+                                    disabled={((!tasks.length) || (selectedTasks.size === tasks.length))}
+                                >
+                                    Check All</Button>
+                            </Col>
+                            <Col>
+                                <Button
+                                    variant="warning"
+                                    onClick={this.selectAll}
+                                    disabled={((!tasks.length) || (selectedTasks.size === tasks.length))}
+                                >
+                                    Check All</Button>
+                            </Col>
+                        </>
                         : ''
-                    }
-                    {tasks.length ?
-                        <Col>
-                            <Button
-                                variant="warning"
-                                onClick={this.selectAll}
-                                disabled={((!tasks.length) || (selectedTasks.size === tasks.length))}
-                            >
-                                Check All</Button>
-                        </Col>:
-                        ""
-                    }
-                    {tasks.length ?
-                        <Col>
-                            <Button
-                                variant="warning"
-                                onClick={this.DeselectAll}
-                                disabled={!selectedTasks.size}
-                            >
-                                Deselect All</Button>
-                        </Col>:
-                        ""
                     }
                 </Row>
                 <Row>
