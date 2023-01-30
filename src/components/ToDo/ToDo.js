@@ -134,10 +134,10 @@ class ToDo extends Component {
                             <Col>
                                 <Button
                                     variant="warning"
-                                    onClick={this.selectAll}
-                                    disabled={((!tasks.length) || (selectedTasks.size === tasks.length))}
+                                    onClick={this.DeselectAll}
+                                    disabled={!selectedTasks.size}
                                 >
-                                    Check All</Button>
+                                    Deselect All</Button>
                             </Col>
                         </>
                         : ''
