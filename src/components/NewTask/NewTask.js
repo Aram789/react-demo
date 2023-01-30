@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Button, Form, InputGroup} from "react-bootstrap";
+import {Button, Form, FormText, Modal} from "react-bootstrap";
 import idGenerator from "../../helpers/idGenerator";
 import PropTypes from "prop-types";
 
@@ -32,33 +32,50 @@ class NewTask extends Component {
         }
         this.props.onAdd(newTask);
         this.setState({
-            title:'',
-            description:''
+            title: '',
+            description: ''
         })
 
 
     }
 
     render() {
-        const {disabled} = this.props;
+        const {onClose} = this.props;
         const {title, description} = this.state;
         return (
-            <InputGroup>
-                <Form.Control
-                    placeholder="Title"
-                    onChange={this.handleChange}
-                    value={title}
-                    onKeyDown={this.handleKeyDown}
-                    disabled={!!disabled}
-                />
-                <Button variant="primary"
-                        onClick={this.handleSubmit}
-                        id="button-addon2"
-                        disabled={!!disabled}
-                >
-                    Add Task
-                </Button>
-            </InputGroup>
+            <Modal
+                show={true}
+                onHide={onClose}
+                size="lg"
+                aria-labelledby="contained-modal-title-vcenter"
+                centered
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title id="contained-modal-title-vcenter">
+                        Add New Task
+                    </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form.Control className={'my-3'}
+                        placeholder="Title"
+                        onChange={this.handleChange}
+                        value={title}
+                        onKeyDown={this.handleKeyDown}
+                    />
+                    <Form.Control
+                        as="textarea"
+                        rows={3}
+                    />
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="primary"
+                            onClick={this.handleSubmit}
+                            id="button-addon2"
+                    >
+                        Add Task
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         )
     }
 
@@ -66,6 +83,5 @@ class NewTask extends Component {
 
 NewTask.propTypes = {
     onAdd: PropTypes.func.isRequired,
-    disabled:PropTypes.bool.isRequired,
 };
 export default NewTask;

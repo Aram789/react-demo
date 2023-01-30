@@ -5,28 +5,22 @@ import PropTypes from 'prop-types';
 
 
 class Task extends Component {
-    state = {
-        selected: false
-    };
     handleChange = () => {
         const {onToggle, data} = this.props
         onToggle(data._id)
-
-        this.setState({
-            selected: !this.state.selected
-        })
     }
 
     render() {
         const task = this.props.data;
-        const {disabled, onDelete} = this.props;
-        const {selected} = this.state
+        const {disabled, onDelete, selected} = this.props;
         return (
             <Card className={`${selected ? styles.selected : ''} my-2`}>
                 <Card.Body>
                     <Card.Title>{task.title}</Card.Title>
                     <Form.Check
                         onChange={this.handleChange}
+                        checked={selected}
+
                     />
                     <Card.Text>
                         Some quick example text to build on the card title and make up the
@@ -48,6 +42,7 @@ Task.propTypes = {
     data: PropTypes.object.isRequired,
     onToggle: PropTypes.func.isRequired,
     disabled:PropTypes.bool.isRequired,
-    onDelete:PropTypes.func.isRequired
+    onDelete:PropTypes.func.isRequired,
+    selected: PropTypes.bool.isRequired
 };
 export default Task;
