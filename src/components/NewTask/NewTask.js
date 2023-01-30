@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Button, Form, FormText, Modal} from "react-bootstrap";
+import {Button, Form, Modal} from "react-bootstrap";
 import idGenerator from "../../helpers/idGenerator";
 import PropTypes from "prop-types";
 
@@ -8,9 +8,9 @@ class NewTask extends Component {
         title: '',
         description: ''
     };
-    handleChange = (event) => {
+    handleChange = (value, name) => {
         this.setState({
-            title: event.target.value
+            [name]: value
         })
     }
     handleKeyDown = (event) => {
@@ -35,13 +35,10 @@ class NewTask extends Component {
             title: '',
             description: ''
         })
-
-
     }
 
     render() {
         const {onClose} = this.props;
-        const {title, description} = this.state;
         return (
             <Modal
                 show={true}
@@ -58,13 +55,14 @@ class NewTask extends Component {
                 <Modal.Body>
                     <Form.Control className={'my-3'}
                         placeholder="Title"
-                        onChange={this.handleChange}
-                        value={title}
-                        onKeyDown={this.handleKeyDown}
+                        onChange={(event)=>this.handleChange(event.target.value, 'title')}
+                        onKeyPress={this.handleKeyDown}
                     />
                     <Form.Control
                         as="textarea"
+                        placeholder="Description"
                         rows={3}
+                        onChange={(event)=>this.handleChange(event.target.value, 'description')}
                     />
                 </Modal.Body>
                 <Modal.Footer>
@@ -83,5 +81,6 @@ class NewTask extends Component {
 
 NewTask.propTypes = {
     onAdd: PropTypes.func.isRequired,
+    onClose:PropTypes.func.isRequired
 };
 export default NewTask;
