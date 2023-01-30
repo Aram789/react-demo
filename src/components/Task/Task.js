@@ -2,6 +2,8 @@ import React, {Component} from "react";
 import styles from './taskStyle.module.css';
 import {Button, Card, Form} from "react-bootstrap";
 import PropTypes from 'prop-types';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faTrashAlt, faEdit} from "@fortawesome/free-solid-svg-icons";
 
 
 class Task extends Component {
@@ -16,12 +18,12 @@ class Task extends Component {
         return (
             <Card className={`${selected ? styles.selected : ''} my-2`}>
                 <Card.Body>
-                    <Card.Title>{task.title}</Card.Title>
                     <Form.Check
                         onChange={this.handleChange}
                         checked={selected}
 
                     />
+                    <Card.Title>{task.title}</Card.Title>
                     <Card.Text>
                         {task.description}
                     </Card.Text>
@@ -29,7 +31,16 @@ class Task extends Component {
                         variant="danger"
                         onClick={() => onDelete(task._id)}
                         disabled={disabled}
-                    >Delete</Button>
+                    >
+                        <FontAwesomeIcon icon={faTrashAlt}/>
+                    </Button>
+                    <Button
+                        className={'mx-2'}
+                        variant="warning"
+                        disabled={disabled}
+                    >
+                        <FontAwesomeIcon icon={faEdit}/>
+                    </Button>
                 </Card.Body>
             </Card>
         )

@@ -8,7 +8,8 @@ class NewTask extends Component {
         title: '',
         description: ''
     };
-    handleChange = (value, name) => {
+    handleChange = (event) => {
+        const {name, value} = event.target
         this.setState({
             [name]: value
         })
@@ -55,14 +56,16 @@ class NewTask extends Component {
                 <Modal.Body>
                     <Form.Control className={'my-3'}
                         placeholder="Title"
-                        onChange={(event)=>this.handleChange(event.target.value, 'title')}
+                        onChange={this.handleChange}
                         onKeyPress={this.handleKeyDown}
+                        name='title'
                     />
                     <Form.Control
                         as="textarea"
                         placeholder="Description"
                         rows={3}
-                        onChange={(event)=>this.handleChange(event.target.value, 'description')}
+                        onChange={this.handleChange}
+                        name='description'
                     />
                 </Modal.Body>
                 <Modal.Footer>

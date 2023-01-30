@@ -4,7 +4,7 @@ import {Button, Col, Row, Container} from 'react-bootstrap';
 import NewTask from "../NewTask/NewTask";
 import Confirm from "../Confirm";
 
-// 15-2 14:45
+
 class ToDo extends Component {
     state = {
         tasks: [],
