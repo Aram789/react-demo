@@ -4,8 +4,8 @@ import {Button, Col, Row, Container} from 'react-bootstrap';
 import NewTask from "../NewTask/NewTask";
 import Confirm from "../Confirm";
 import EditTaskModal from "../EditTaskModal";
-import task from "../Task/Task";
 
+//2535
 class ToDo extends Component {
     state = {
         tasks: [],
