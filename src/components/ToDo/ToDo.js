@@ -5,7 +5,6 @@ import NewTask from "../NewTask/NewTask";
 import Confirm from "../Confirm";
 import EditTaskModal from "../EditTaskModal";
 
-//2535
 class ToDo extends Component {
     state = {
         tasks: [],
