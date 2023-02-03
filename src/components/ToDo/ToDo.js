@@ -52,10 +52,7 @@ class ToDo extends Component {
         const {selectedTasks, tasks} = this.state;
 
         const newTask = tasks.filter((task) => {
-            if (selectedTasks.has(task._id)) {
-                return false;
-            }
-            return true;
+            return !selectedTasks.has(task._id);
         });
         this.setState({
             tasks: newTask,
