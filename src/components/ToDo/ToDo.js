@@ -1,10 +1,10 @@
 import React, {Component} from "react";
 import Task from "../Task/Task";
-import {Button, Col, Row, Container} from 'react-bootstrap';
+import {Button, Col, Container, Row} from 'react-bootstrap';
 import NewTask from "../NewTask/NewTask";
 import Confirm from "../Confirm";
 import EditTaskModal from "../EditTaskModal";
-
+//18:46
 class ToDo extends Component {
     state = {
         tasks: [],
@@ -14,17 +14,31 @@ class ToDo extends Component {
         editTask: null
     }
     addTask = (newTask) => {
-        const promise = new Promise((resolve, reject) => {
+        new Promise((resolve, reject) => {
             resolve(newTask)
         })
             .then((data) => {
-                let task = fetch('http://localhost:3001/task', {
+                return data;
+            })
+            .then((res) => {
+                fetch('http://localhost:3001/task', {
                     method: 'POST',
-                    body: JSON.stringify(data),
+                    body: JSON.stringify(res),
                     headers: {
                         'Content-Type': 'application/json'
                     },
                 })
+                    .then((response) => {
+                        return response.json();
+                    })
+                    .then((r)=>{
+                        const tasks = [...this.state.tasks, r];
+                        this.setState({
+                            tasks,
+                            openNewTaskModal: false
+                        })
+                    })
+
             })
             .catch((error) => {
                 console.log(error)
@@ -32,10 +46,7 @@ class ToDo extends Component {
 
         // const tasks = [...this.state.tasks, newTask];
         //
-        // this.setState({
-        //     tasks,
-        //     openNewTaskModal: false
-        // })
+
     }
     remove = (taskId) => {
         const newTasks = this.state.tasks.filter((task) => taskId !== task._id) //return true new array
