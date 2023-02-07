@@ -4,7 +4,7 @@ import {Button, Col, Container, Row} from 'react-bootstrap';
 import NewTask from "../NewTask/NewTask";
 import Confirm from "../Confirm";
 import EditTaskModal from "../EditTaskModal";
-//18:46
+//7:11
 class ToDo extends Component {
     state = {
         tasks: [],
@@ -17,36 +17,32 @@ class ToDo extends Component {
         new Promise((resolve, reject) => {
             resolve(newTask)
         })
-            .then((data) => {
-                return data;
-            })
             .then((res) => {
-                fetch('http://localhost:3001/task', {
+                fetch('http://localhost:3001/taskk', {
                     method: 'POST',
                     body: JSON.stringify(res),
                     headers: {
                         'Content-Type': 'application/json'
                     },
                 })
-                    .then((response) => {
-                        return response.json();
-                    })
-                    .then((r)=>{
-                        const tasks = [...this.state.tasks, r];
+                    .then(async (response) => {
+                        const res = await response.json();
+                        if(response.status>=400 && response.status <600){
+                            if(res.error){
+                                throw res.error
+                            }
+                        }
+                        const tasks = [...this.state.tasks, res];
+
                         this.setState({
                             tasks,
                             openNewTaskModal: false
                         })
                     })
-
             })
             .catch((error) => {
                 console.log(error)
             })
-
-        // const tasks = [...this.state.tasks, newTask];
-        //
-
     }
     remove = (taskId) => {
         const newTasks = this.state.tasks.filter((task) => taskId !== task._id) //return true new array
