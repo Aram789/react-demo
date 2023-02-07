@@ -29,11 +29,11 @@ class NewTask extends PureComponent {
             title,
             description
         }
+        // this.setState({
+        //     title: '',
+        //     description: ''
+        // })
         this.props.onAdd(newTask);
-        this.setState({
-            title: '',
-            description: ''
-        })
     }
 
     render() {

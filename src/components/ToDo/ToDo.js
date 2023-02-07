@@ -4,7 +4,8 @@ import {Button, Col, Container, Row} from 'react-bootstrap';
 import NewTask from "../NewTask/NewTask";
 import Confirm from "../Confirm";
 import EditTaskModal from "../EditTaskModal";
-//7:11
+
+//19:44
 class ToDo extends Component {
     state = {
         tasks: [],
@@ -13,37 +14,65 @@ class ToDo extends Component {
         openNewTaskModal: false,
         editTask: null
     }
-    addTask = (newTask) => {
-        new Promise((resolve, reject) => {
-            resolve(newTask)
+    componentDidMount(){
+        fetch('http://localhost:3001/task', {
+            method: 'GET',
+            headers: {
+                "Content-Type": 'application/json'
+            }
         })
-            .then((res) => {
-                fetch('http://localhost:3001/taskk', {
-                    method: 'POST',
-                    body: JSON.stringify(res),
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                })
-                    .then(async (response) => {
-                        const res = await response.json();
-                        if(response.status>=400 && response.status <600){
-                            if(res.error){
-                                throw res.error
-                            }
-                        }
-                        const tasks = [...this.state.tasks, res];
+            .then(async (response) => {
+                const res = await response.json();
 
-                        this.setState({
-                            tasks,
-                            openNewTaskModal: false
-                        })
-                    })
+                if (response.status >= 400 && response.status < 600) {
+                    if (res.error) {
+                        throw res.error;
+                    } else {
+                        throw new Error('Something went wrong!');
+                    }
+                }
+
+                this.setState({
+                    tasks: res
+                });
+
             })
             .catch((error) => {
-                console.log(error)
-            })
+                console.log('catch error', error);
+            });
+
     }
+    addTask = (newTask) => {
+        fetch('http://localhost:3001/task', {
+            method: 'POST',
+            body: JSON.stringify(newTask),
+            headers: {
+                "Content-Type": 'application/json'
+            }
+        })
+            .then(async (response) => {
+                const res = await response.json();
+
+                if (response.status >= 400 && response.status < 600) {
+                    if (res.error) {
+                        throw res.error;
+                    } else {
+                        throw new Error('Something went wrong!');
+                    }
+                }
+
+                const tasks = [...this.state.tasks, res];
+
+                this.setState({
+                    tasks,
+                    openNewTaskModal: false
+                });
+
+            })
+            .catch((error) => {
+                console.log('catch error', error);
+            });
+    };
     remove = (taskId) => {
         const newTasks = this.state.tasks.filter((task) => taskId !== task._id) //return true new array
 
