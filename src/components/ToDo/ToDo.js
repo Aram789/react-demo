@@ -5,7 +5,7 @@ import NewTask from "../NewTask/NewTask";
 import Confirm from "../Confirm";
 import EditTaskModal from "../EditTaskModal";
 
-//19:44
+//2603
 class ToDo extends Component {
     state = {
         tasks: [],
@@ -74,6 +74,34 @@ class ToDo extends Component {
             });
     };
     remove = (taskId) => {
+        fetch('http://localhost:3001/task'+ taskId, {
+            method: 'Delete',
+            headers: {
+                "Content-Type": 'application/json'
+            }
+        })
+            .then(async (response) => {
+                const res = await response.json();
+
+                if (response.status >= 400 && response.status < 600) {
+                    if (res.error) {
+                        throw res.error;
+                    } else {
+                        throw new Error('Something went wrong!');
+                    }
+                }
+
+                const tasks = [...this.state.tasks, res];
+
+                this.setState({
+                    tasks,
+                    openNewTaskModal: false
+                });
+
+            })
+            .catch((error) => {
+                console.log('catch error', error);
+            });
         const newTasks = this.state.tasks.filter((task) => taskId !== task._id) //return true new array
 
         this.setState({
