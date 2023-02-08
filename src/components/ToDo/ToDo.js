@@ -5,7 +5,7 @@ import NewTask from "../NewTask/NewTask";
 import Confirm from "../Confirm";
 import EditTaskModal from "../EditTaskModal";
 
-//1125
+//21-2 14:15
 class ToDo extends Component {
     state = {
         tasks: [],
@@ -122,13 +122,14 @@ class ToDo extends Component {
         })
     }
     removeAllChecked = () => {
-        const {selectedTasks} = this.state;
-
-
+        const {selectedTasks, tasks} = this.state;
+        const body = {
+            tasks: [...selectedTasks]
+        }
 
         fetch('http://localhost:3001/task', {
             method: 'PATCH',
-            body: JSON.stringify(selectedTasks),
+            body: JSON.stringify(body),
             headers: {
                 "Content-Type": 'application/json'
             }
@@ -143,7 +144,7 @@ class ToDo extends Component {
                         throw new Error('Something went wrong!');
                     }
                 }
-                const newTask = res.filter((task) => {
+                const newTask = tasks.filter((task) => {
                     return !selectedTasks.has(task._id);
                 });
                 this.setState({
@@ -186,14 +187,39 @@ class ToDo extends Component {
         })
     }
     handleSaveTask = (editedTask) => {
-        const tasks = [...this.state.tasks];
-        const findIndex = tasks.findIndex((task) => task._id === editedTask._id);
-        tasks[findIndex] = editedTask;
 
-        this.setState({
-            tasks: tasks,
-            editTask: null
+        fetch('http://localhost:3001/task/' + editedTask._id, {
+            method: 'PUT',
+            body: JSON.stringify(editedTask),
+            headers: {
+                "Content-Type": 'application/json'
+            }
         })
+            .then(async (response) => {
+                const res = await response.json();
+
+                if (response.status >= 400 && response.status < 600) {
+                    if (res.error) {
+                        throw res.error;
+                    } else {
+                        throw new Error('Something went wrong!');
+                    }
+                }
+
+                const tasks = [...this.state.tasks];
+                const findIndex = tasks.findIndex((task) => task._id === editedTask._id);
+                tasks[findIndex] = editedTask;
+
+                this.setState({
+                    tasks: tasks,
+                    editTask: null
+                })
+
+            })
+            .catch((error) => {
+                console.log('catch error', error);
+            });
+
     }
 
     render() {

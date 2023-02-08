@@ -1,11 +1,14 @@
 import React, {PureComponent} from "react";
 import {Button, Form, Modal} from "react-bootstrap";
 import PropTypes from "prop-types";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 class NewTask extends PureComponent {
     state = {
         title: '',
-        description: ''
+        description: '',
+        date: new Date()
     };
     handleChange = (event) => {
         const {name, value} = event.target
@@ -35,7 +38,11 @@ class NewTask extends PureComponent {
         // })
         this.props.onAdd(newTask);
     }
-
+    dateChange = (dateValue) =>{
+        this.setState({
+            date:dateValue
+        })
+    }
     render() {
         const {onClose} = this.props;
         return (
@@ -53,10 +60,10 @@ class NewTask extends PureComponent {
                 </Modal.Header>
                 <Modal.Body>
                     <Form.Control className={'my-3'}
-                        placeholder="Title"
-                        onChange={this.handleChange}
-                        onKeyPress={this.handleKeyDown}
-                        name='title'
+                                  placeholder="Title"
+                                  onChange={this.handleChange}
+                                  onKeyPress={this.handleKeyDown}
+                                  name='title'
                     />
                     <Form.Control
                         as="textarea"
@@ -65,6 +72,11 @@ class NewTask extends PureComponent {
                         onChange={this.handleChange}
                         name='description'
                     />
+                    <DatePicker
+                        selected={this.state.date}
+                        minDate={new Date()}
+                        className='my-3 form-control'
+                        onChange={this.dateChange}/>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="primary"
@@ -82,6 +94,6 @@ class NewTask extends PureComponent {
 
 NewTask.propTypes = {
     onAdd: PropTypes.func.isRequired,
-    onClose:PropTypes.func.isRequired
+    onClose: PropTypes.func.isRequired
 };
 export default NewTask;
