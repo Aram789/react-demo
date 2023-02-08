@@ -5,7 +5,7 @@ import NewTask from "../NewTask/NewTask";
 import Confirm from "../Confirm";
 import EditTaskModal from "../EditTaskModal";
 
-//2603
+//1125
 class ToDo extends Component {
     state = {
         tasks: [],
@@ -74,7 +74,7 @@ class ToDo extends Component {
             });
     };
     remove = (taskId) => {
-        fetch('http://localhost:3001/task'+ taskId, {
+        fetch('http://localhost:3001/task/' + taskId, {
             method: 'Delete',
             headers: {
                 "Content-Type": 'application/json'
@@ -91,22 +91,16 @@ class ToDo extends Component {
                     }
                 }
 
-                const tasks = [...this.state.tasks, res];
+                const newTasks = this.state.tasks.filter((task) => taskId !== task._id) //return true new array
 
                 this.setState({
-                    tasks,
-                    openNewTaskModal: false
-                });
+                    tasks: newTasks,
+                })
 
             })
             .catch((error) => {
                 console.log('catch error', error);
             });
-        const newTasks = this.state.tasks.filter((task) => taskId !== task._id) //return true new array
-
-        this.setState({
-            tasks: newTasks,
-        })
     }
 
     selectedTasks = (taskId) => {
@@ -128,17 +122,42 @@ class ToDo extends Component {
         })
     }
     removeAllChecked = () => {
+        const {selectedTasks} = this.state;
 
-        const {selectedTasks, tasks} = this.state;
 
-        const newTask = tasks.filter((task) => {
-            return !selectedTasks.has(task._id);
-        });
-        this.setState({
-            tasks: newTask,
-            selectedTasks: new Set(),
-            showConfirm: false
+
+        fetch('http://localhost:3001/task', {
+            method: 'PATCH',
+            body: JSON.stringify(selectedTasks),
+            headers: {
+                "Content-Type": 'application/json'
+            }
         })
+            .then(async (response) => {
+                const res = await response.json();
+
+                if (response.status >= 400 && response.status < 600) {
+                    if (res.error) {
+                        throw res.error;
+                    } else {
+                        throw new Error('Something went wrong!');
+                    }
+                }
+                const newTask = res.filter((task) => {
+                    return !selectedTasks.has(task._id);
+                });
+                this.setState({
+                    tasks: newTask,
+                    selectedTasks: new Set(),
+                    showConfirm: false
+                })
+
+            })
+            .catch((error) => {
+                console.log('catch error', error);
+            });
+
+
     }
 
     selectAll = () => {
