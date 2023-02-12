@@ -4,6 +4,7 @@ import {Button, Card, Form} from "react-bootstrap";
 import PropTypes from 'prop-types';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrashAlt, faEdit} from "@fortawesome/free-solid-svg-icons";
+import {formatData} from "../../utils";
 
 
 class Task extends PureComponent {
@@ -25,7 +26,10 @@ class Task extends PureComponent {
                     />
                     <Card.Title>{task.title}</Card.Title>
                     <Card.Text>
-                        {task.description}
+                        Description:  {task.description}
+                    </Card.Text>
+                    <Card.Text>
+                       Date: { formatData(task.date)}
                     </Card.Text>
                     <Button
                         variant="danger"

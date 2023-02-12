@@ -5,7 +5,6 @@ import NewTask from "../NewTask/NewTask";
 import Confirm from "../Confirm";
 import EditTaskModal from "../EditTaskModal";
 
-//21-2 14:15
 class ToDo extends Component {
     state = {
         tasks: [],
@@ -197,7 +196,6 @@ class ToDo extends Component {
         })
             .then(async (response) => {
                 const res = await response.json();
-
                 if (response.status >= 400 && response.status < 600) {
                     if (res.error) {
                         throw res.error;
@@ -212,7 +210,7 @@ class ToDo extends Component {
 
                 this.setState({
                     tasks: tasks,
-                    editTask: null
+                    editTask: null,
                 })
 
             })

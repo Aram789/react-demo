@@ -1,12 +1,16 @@
 import React, {PureComponent} from "react";
 import {Button, Form, Modal} from "react-bootstrap";
 import PropTypes from "prop-types";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import {formatData} from "../utils";
 
 class EditTaskModal extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            ...props.data
+            ...props.data,
+            date: props.data.date ? new Date(props.data.date) : new Date()
         };
     }
     handleChange = (event) => {
@@ -23,6 +27,7 @@ class EditTaskModal extends PureComponent {
     handleSubmit = () => {
         const title = this.state.title.trim();
         const description = this.state.description.trim();
+        const {date} = this.state;
 
         if (!title) {
             return;
@@ -30,13 +35,18 @@ class EditTaskModal extends PureComponent {
         this.props.onSave({
             _id:this.state._id,
             title,
-            description
+            description,
+            date: formatData(date.toISOString())
         })
     }
-
+    dateChange = (dateValue) =>{
+        this.setState({
+            date:dateValue || new Date()
+        })
+    }
     render() {
         const {onClose} = this.props;
-        const {title, description} = this.state;
+        const {title, description, date} = this.state;
         return (
             <Modal
                 show={true}
@@ -65,6 +75,12 @@ class EditTaskModal extends PureComponent {
                         onChange={this.handleChange}
                         name='description'
                         value={description}
+                    />
+                    <DatePicker
+                        selected={date}
+                        minDate={new Date()}
+                        className='my-3 form-control'
+                        onChange={this.dateChange}
                     />
                 </Modal.Body>
                 <Modal.Footer>
