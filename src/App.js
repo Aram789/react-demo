@@ -8,6 +8,7 @@ import {NotFound} from "./components/pages/NotFound";
 import NavMenu from "./components/NavMenu/NavMenu";
 import Footer from "./components/Footer";
 import SingleTask from "./components/pages/singleTask/SingleTask";
+//23
 function App() {
     return (
         <div className="App">
