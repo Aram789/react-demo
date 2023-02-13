@@ -6,7 +6,8 @@ import About from "./components/pages/about/about";
 import Contact from "./components/pages/contact/contact";
 import {NotFound} from "./components/pages/NotFound";
 import NavMenu from "./components/NavMenu/NavMenu";
-//22-3
+import Footer from "./components/Footer";
+import SingleTask from "./components/pages/singleTask/SingleTask";
 function App() {
     return (
         <div className="App">
@@ -21,8 +22,12 @@ function App() {
                 <Route path="/contact"
                        element={<Contact/>}
                 />
+                <Route path="/task"
+                       element={<SingleTask/>}
+                />
                 <Route path="*" element={<NotFound/>}/>
             </Routes>
+            <Footer/>
         </div>
     );
 }

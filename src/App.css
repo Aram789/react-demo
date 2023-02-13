@@ -1,3 +1,15 @@
-
-
-
+.App{
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.container{
+    flex: 1;
+}
+a:hover {
+    color: #ac2bac !important;
+}
+.active{
+    color: #ac2bac !important;
+    font-weight: 800;
+}
