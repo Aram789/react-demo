@@ -7,7 +7,8 @@ import {NotFound} from "./components/pages/NotFound";
 import NavMenu from "./components/NavMenu/NavMenu";
 import Footer from "./components/Footer";
 import SingleTask from "./components/pages/singleTask/SingleTask";
-import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+
 
 //23
 function App() {
@@ -15,21 +16,21 @@ function App() {
         <div className="App">
             <Router>
                 <NavMenu/>
-                <Routes>
-                    <Route path="/"
-                           element={<ToDo/>}
+                <Switch>
+                    <Route exact={true}  path="/"
+                           component={ToDo}
                     />
-                    <Route path="/about"
-                           element={<About/>}
+                    <Route exact={true}  path="/about"
+                               component={About}
                     />
-                    <Route path="/contact"
-                           element={<Contact/>}
+                    <Route exact={true}  path="/contact"
+                           component={Contact}
                     />
-                    <Route exact path="/task/:taskId"
-                           element={<SingleTask/>}
+                    <Route exact={true}  path="/task/:taskId"
+                           component={SingleTask}
                     />
-                    <Route path="*" element={<NotFound/>}/>
-                </Routes>
+                    <Route exact={true}  path="*" component={NotFound}/>
+                </Switch>
                 <Footer/>
             </Router>
         </div>
