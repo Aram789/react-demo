@@ -186,7 +186,6 @@ class ToDo extends Component {
         })
     }
     handleSaveTask = (editedTask) => {
-
         fetch('http://localhost:3001/task/' + editedTask._id, {
             method: 'PUT',
             body: JSON.stringify(editedTask),

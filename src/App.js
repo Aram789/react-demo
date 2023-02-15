@@ -25,7 +25,7 @@ function App() {
                     <Route path="/contact"
                            element={<Contact/>}
                     />
-                    <Route exact path="/task/:taskId"
+                    <Route  path="/task/:taskId"
                            element={<SingleTask/>}
                     />
                     <Route path="*" element={<NotFound/>}/>
