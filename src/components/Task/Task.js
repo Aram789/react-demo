@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrashAlt, faEdit} from "@fortawesome/free-solid-svg-icons";
 import {Link} from "react-router-dom";
+import {formatData} from "../../utils";
 
 class Task extends PureComponent {
     handleChange = () => {
@@ -28,6 +29,9 @@ class Task extends PureComponent {
                     </Link>
                     <Card.Text>
                         Description:  {task.description}
+                    </Card.Text>
+                    <Card.Text>
+                        Date: { formatData(task.date)}
                     </Card.Text>
                     <Button
                         variant="danger"

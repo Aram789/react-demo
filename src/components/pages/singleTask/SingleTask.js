@@ -4,6 +4,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faEdit, faTrashAlt} from "@fortawesome/free-solid-svg-icons";
 import EditTaskModal from "../../EditTaskModal";
 import {Navigate} from "react-router-dom";
+import {formatData} from "../../../utils";
 
 export default class SingleTask extends Component {
     state = {
@@ -63,11 +64,9 @@ export default class SingleTask extends Component {
                         throw new Error('Something went wrong!');
                     }
                 }
-                let task = {...this.state.task[0]};
-                task = editTask;
 
                 this.setState({
-                    task,
+                    task:res,
                     editTask: null,
                 })
             })
@@ -118,6 +117,9 @@ export default class SingleTask extends Component {
                                 <Card.Text>
                                     Description: {task.description}
                                 </Card.Text>
+                                <Card.Text>
+                                    Date: { formatData(task.date)}
+                                </Card.Text>
                                 <Button
                                     variant="danger"
                                     onClick={this.removeTask}
@@ -141,7 +143,7 @@ export default class SingleTask extends Component {
                             }
                         </Card>
                         :
-                        <p> not task</p>
+                        <h1 className='text-center'> Not Task</h1>
 
                 }
                 {navigate ? <Navigate to="/" replace={true}/> : ''}
