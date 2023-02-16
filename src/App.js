@@ -7,13 +7,12 @@ import {NotFound} from "./components/pages/NotFound";
 import NavMenu from "./components/NavMenu/NavMenu";
 import Footer from "./components/Footer";
 import SingleTask from "./components/pages/singleTask/SingleTask";
-import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import { Routes, Route} from 'react-router-dom';
 
 //23
 function App() {
     return (
         <div className="App">
-            <Router>
                 <NavMenu/>
                 <Routes>
                     <Route path="/"
@@ -31,7 +30,6 @@ function App() {
                     <Route path="*" element={<NotFound/>}/>
                 </Routes>
                 <Footer/>
-            </Router>
         </div>
     );
 }
