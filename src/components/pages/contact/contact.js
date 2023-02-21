@@ -8,17 +8,39 @@ export default function Contact() {
         name.current.focus()
     }, [])
 
-    const [value, setValue] = useState({
+    const [values, setValues] = useState({
         name: '',
         email: '',
         message: ''
     })
+    const [errors, setErrors] = useState({
+        name: null,
+        email: null,
+        message: null
+    })
+    const handleChange = ({target : {name, value}}) => {
+        if(!value){
+            setErrors({
+                ...errors,
+                [name]:'Խոմ դու քոռ չես'
+            });
+        }else {
+            setErrors({
+                ...errors,
+                [name]:null
+            });
+        }
+        setValues({
+            ...values,
+            [name]:value
+        });
+    }
 
     function onSubmit(event) {
         event.preventDefault()
         fetch('http://localhost:3001/form', {
             method: 'POST',
-            body: JSON.stringify(value),
+            body: JSON.stringify(values),
             headers: {
                 "Content-Type": 'application/json'
             }
@@ -34,7 +56,7 @@ export default function Contact() {
                     }
                 }
                 alert('success')
-                setValue({
+                setValues({
                     name: '',
                     email: '',
                     message: ''
@@ -51,30 +73,21 @@ export default function Contact() {
             <Form onSubmit={(event) => onSubmit(event)}>
                 <Form.Group className="mb-3" controlId="formBasicName">
                     <Form.Label>Name</Form.Label>
-                    <Form.Control type="text" placeholder="Name" value={value.name} ref={name} onChange={(event) => {
-                        setValue({
-                            ...value,
-                            name: event.target.value
-                        })
-                    }}/>
+                    <Form.Control type="text" required={true} value={values.name} placeholder="Name"  ref={name} name={'name'}
+                                  onChange={handleChange}/>
+                    <strong className={'text-danger'}>{errors.name}</strong>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label>Email address</Form.Label>
-                    <Form.Control type="email" value={value.email} placeholder="Enter email" onChange={(event) => {
-                        setValue({
-                            ...value,
-                            email: event.target.value
-                        });
-                    }}/>
+                    <Form.Control type="email" required={true} value={values.email}  placeholder="Enter email" name={'email'}
+                                  onChange={handleChange}/>
+                    <strong className={'text-danger'}>{errors.email}</strong>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formBasicMessage">
                     <Form.Label>Message</Form.Label>
-                    <Form.Control type="text" value={value.message} placeholder="Message" onChange={(event) => {
-                        setValue({
-                            ...value,
-                            message: event.target.value
-                        })
-                    }}/>
+                    <Form.Control type="text" required={true} value={values.message}  placeholder="Message" name={'message'}
+                                  onChange={handleChange}/>
+                    <strong className={'text-danger'}>{errors.message}</strong>
                 </Form.Group>
                 <Button variant="primary" type="submit">
                     Submit
