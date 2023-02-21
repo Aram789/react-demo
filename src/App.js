@@ -9,7 +9,7 @@ import Footer from "./components/Footer";
 import SingleTask from "./components/pages/singleTask/SingleTask";
 import { Routes, Route} from 'react-router-dom';
 
-//23
+//26
 function App() {
     return (
         <div className="App">
